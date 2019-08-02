@@ -22,15 +22,89 @@ a. Create a `Human` class with two properties:
 - `age` of type Int.
 
 Then create an initializer for the class and create two `Human` instances.
+```swift
+class Human {
+var name: String
+var age: Int
+
+init(name:String, age:Int) {
+self.name = name
+self.age = age
+}
+}
+
+var firstPerson = Human(name: "Mike A", age: 33)
+var secondPerson = Human(name: "Lola A", age: 28)
+```
 
 b. Make the `Human` class adopt the CustomStringConvertible protocol. Then print both of your previously initialized
 `Human` objects.
+
+```swift
+class Human: CustomStringConvertible, Equatable, Comparable {
+static func < (lhs: Human, rhs: Human) -> Bool {
+return lhs.age < rhs.age
+}
+
+static func == (lhs: Human, rhs: Human) -> Bool {
+return   lhs.age == rhs.age && lhs.name == rhs.name && lhs.description == rhs.description
+}
+
+var description: String {
+get {
+return "My name is \(name)"
+}
+set{
+
+}
+}
+
+var name: String
+var age: Int
+
+init(name:String, age:Int) {
+self.name = name
+self.age = age
+}
+}
+
+var firstPerson = Human(name: "Mike A", age: 33)
+var secondPerson = Human(name: "Lola A", age: 88)
+var thirdPerson = Human(name: "Eni A", age: 21)
+```
 
 c. Make the `Human` class adopt the Equatable protocol. Two instances of `Human` should be considered equal
 if their names and ages are identical to one another. Print the result of a boolean expression
 evaluating whether or not your two previously initialized `Human` objects are equal to eachother
 (using ==). Then print the result of a boolean expression evaluating whether or not your two
 previously initialized `Human` objects are not equal to eachother (using !=).
+
+```swift
+class Human: CustomStringConvertible, Equatable {
+static func == (lhs: Human, rhs: Human) -> Bool {
+return   lhs.age == rhs.age && lhs.name == rhs.name && lhs.description == rhs.description
+}
+
+var description: String
+
+var name: String
+var age: Int
+
+init(name:String, age:Int, description:String) {
+self.name = name
+self.age = age
+self.description = description
+}
+}
+
+var firstPerson = Human(name: "Mike A", age: 33, description: "He is the brother")
+var secondPerson = Human(name: "Mike A", age: 33, description: "He is the brother")
+
+print(firstPerson == secondPerson)
+
+print(firstPerson != secondPerson)
+
+```
 
 d. Make the `Human` class adopt the `Comparable` protocol. One `Human` is greater than another `Human` if its age is bigger. Create another
 three instances of a `Human`, then create an array called people of type [`Human`] with all of the
@@ -40,6 +114,37 @@ Create a new array called sortedPeople of type [`Human`] that is the people arra
 
 </br> </br>
 
+```swift
+class Human: CustomStringConvertible, Equatable, Comparable {
+static func < (lhs: Human, rhs: Human) -> Bool {
+return lhs.age < rhs.age
+}
+
+static func == (lhs: Human, rhs: Human) -> Bool {
+return   lhs.age == rhs.age && lhs.name == rhs.name && lhs.description == rhs.description
+}
+
+var description: String
+
+var name: String
+var age: Int
+
+init(name:String, age:Int, description:String) {
+self.name = name
+self.age = age
+self.description = description
+}
+}
+
+var firstPerson = Human(name: "Mike A", age: 33, description: "He is the brother")
+var secondPerson = Human(name: "Lola A", age: 88, description: "She is sister")
+var thirdPerson = Human(name: "Eni A", age: 21, description: "He is the younger brother")
+
+print(firstPerson < secondPerson)
+
+let people:[Human] = [firstPerson,secondPerson,thirdPerson]
+let sortedPeople:[Human] = people.sorted(by: {$0.age > $1.age})
+```
 
 ## Question 2
 
@@ -51,9 +156,40 @@ b. Define a `Car` struct that implements the `Vehicle` protocol. `numberOfWheels
 and drive() should print "Vroom, vroom!" Create an instance of `Car`, print its number of wheels,
 then call drive().
 
+```swift
+protocol Vehicle {
+var numberOfWheels: Int {get}
+func drive()
+}
+
+struct Car:Vehicle {
+var numberOfWheels: Int
+
+func drive() {
+print("Vroom, vroom!")
+}
+}
+
+var myFirstCar = Car(numberOfWheels: 4)
+myFirstCar.drive()
+```
+
 c. Define a Bike struct that implements the `Vehicle` protocol. `numberOfWheels` should return a value of 2,
 and drive() should print "Begin pedaling!". Create an instance of Bike, print its number of wheels,
 then call drive().
+
+```swift
+struct bicycle:Vehicle {
+var numberOfWheels: Int
+
+func drive() {
+print("Begin pedaling!")
+}
+}
+
+var myFirstBike = bicycle(numberOfWheels: 2)
+myFirstBike.drive()
+```
 
 </br> </br>
 
@@ -72,6 +208,17 @@ protocol Bird {
 protocol Flyable {
  var airspeedVelocity: Double { get }
 }
+
+struct penguinbird:Bird {
+var name: String = "penguin bird"
+var canFly: Bool = false
+}
+
+struct Eagle:Bird, Flyable {
+var name: String = "Eagle"
+var canFly: Bool = true
+var airspeedVelocity: Double = 5.6
+}
 ```
 
 </br> </br>
@@ -79,15 +226,33 @@ protocol Flyable {
 ## Question 4
 
 a. Create a protocol called `Transformation`.  The protocol should specify a mutating method called transform
+```swift
+protocol Transformation {
+mutating func transform() 
+}
+```
 
 b. Make an enum called `SuperHero` that conforms to `Transformation` with cases `notHulk` and `hulk`
 
+```swift
+protocol Transformation {
+mutating func transform()
+}
+
+enum SuperHero: Transformation {
+case notHulk
+case Hulk
+
+func transform() {
+}
+}
+```
 c. Create an instance of it named `bruceBanner`. Make it so that when the transform function is called that bruceBanner turns from
 `.notHulk` to `.hulk.``
 
 ```swift
 enum SuperHero: Transformation {
-    // write code here.
+// write code here.
 }
 
 // Example Output:
@@ -97,7 +262,34 @@ bruceBanner.transform() . // hulk
 
 bruceBanner.transform()  // notHulk
 ```
+```swift
 
+protocol Transformation {
+mutating func transform()
+}
+
+enum SuperHero: Transformation {
+
+case notHulk
+case Hulk
+
+mutating func transform(){
+switch self {
+case.Hulk:
+self = .notHulk
+case.notHulk:
+self  = .Hulk
+}
+}
+}
+
+// Example Output:
+var bruceBanner = SuperHero.notHulk
+
+bruceBanner.transform()
+
+bruceBanner.transform()
+```
 </br> </br>
 
 
@@ -116,6 +308,47 @@ e. `message` should return a unique message for each animal when talk is called.
 f. Put an instance of each of your classes in an array.
 
 g. Iterate over the array and have them print their `message` property
+
+```swift
+protocol Communication {
+var message:String {get}
+
+}
+
+class Cow:Communication{
+var message: String {
+get {
+return "Hey i am a Cow and i go MOOOOOO"
+}
+}
+}
+
+class Dog:Communication {
+var message: String {
+get {
+return "Hey i am a dog and i go DARK"
+}
+}
+}
+
+class Cat:Communication {
+var message: String {
+get {
+return "Hey i am a cat and i go MEAW"
+}
+}
+}
+
+var myCow = Cow()
+var myDog = Dog()
+var myCat = Cat()
+
+var arrayOfAnimal:[Any] = [myCat.message,myCat.message,myCow.message]
+
+for animal in arrayOfAnimal {
+print(animal)
+}
+```
 
 
 ## Question 6
